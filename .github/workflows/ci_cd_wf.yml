@@ -33,7 +33,6 @@ jobs:
       
       - name: pytester-cov
           id: pytester-cov
-          uses: programmingwithalex/pytester-cov@main
           with:
             pytest-root-dir: '.'
             cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
@@ -52,6 +51,5 @@ jobs:
           exit 1
 
       - name: Commit pytest coverage table
-        uses: peter-evans/commit-comment@main
         with:
           body: ${{ steps.pytester-cov.outputs.output-table }}
