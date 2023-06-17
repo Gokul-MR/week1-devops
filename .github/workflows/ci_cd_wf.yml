@@ -51,6 +51,10 @@ jobs:
           echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
           exit 1
 
+      - name: Get pull request number
+        id: pr
+        run: echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+
       - name: Commit pytest coverage table
         uses: actions/github-script@v4
         with:
