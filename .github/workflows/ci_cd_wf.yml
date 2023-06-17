@@ -52,6 +52,20 @@ jobs:
           exit 1
 
       - name: Commit pytest coverage table
-        uses: Gokul-MR/commit-comment@main
+        uses: actions/github-script@v4
         with:
-          body: ${{ steps.pytester-cov.outputs.output-table }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const pullNumber = process.env.PR_NUMBER;
+            const commentBody = `
+              \`\`\`
+              ${{ steps.pytester-cov.outputs.output-table }}
+              \`\`\`
+            `;
+            github.pulls.createComment({
+              owner,
+              repo,
+              pull_number: pullNumber,
+              body: commentBody
+            }); 
