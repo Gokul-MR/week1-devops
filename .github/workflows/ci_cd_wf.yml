@@ -52,6 +52,6 @@ jobs:
           exit 1
 
       - name: Commit pytest coverage table
-        uses: week1-devops/commit-comment@main
+        uses: Gokul-MR/commit-comment@main
         with:
           body: ${{ steps.pytester-cov.outputs.output-table }}
