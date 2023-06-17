@@ -52,7 +52,7 @@ jobs:
           exit 1
 
       - name: Commit pytest coverage table
-        uses: Gokul-MR/commit-comment@v1
+        uses: peter-evans/commit-comment@v1
         with:
           body: ${{ steps.pytester-cov.outputs.output-table }}
           token: ${{ secrets.GITHUB_TOKEN }}
