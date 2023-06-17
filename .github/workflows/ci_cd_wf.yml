@@ -55,4 +55,4 @@ jobs:
         uses: peter-evans/commit-comment@v1
         with:
           body: ${{ steps.pytester-cov.outputs.output-table }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.workflow-creashcourse }}
