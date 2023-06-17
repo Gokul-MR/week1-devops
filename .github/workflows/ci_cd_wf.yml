@@ -51,8 +51,11 @@ jobs:
           echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
           exit 1
 
-      - name: Commit pytest coverage table
-        uses: peter-evans/commit-comment@v1
-        with:
-          body: ${{ steps.pytester-cov.outputs.output-table }}
-          token: ${{ secrets.workflow-creashcourse }}
+  coverage:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Get Cover 
+          uses: orgoro/coverage@v3.1
+          with:
+              coverageFile: path/to/coverage.xml
+              token: ${{ secrets.GITHUB_TOKEN }}
