@@ -63,9 +63,9 @@ jobs:
               ${{ steps.pytester-cov.outputs.output-table }}
               \`\`\`
             `;
-            github.pulls.createComment({
+            github.issues.createComment({
               owner,
               repo,
-              pull_number: pullNumber,
+              issue_number: pullNumber,
               body: commentBody
-            }); 
+            });  
