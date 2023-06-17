@@ -30,13 +30,14 @@ jobs:
       - name: Run tests
         run: |
           python -m pytest -v tests
-      
+          
       - name: pytester-cov
-          id: pytester-cov
-          with:
-            pytest-root-dir: '.'
-            cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
-            cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
+        id: pytester-cov
+        uses: actions/checkout@v3
+        with:
+          pytest-root-dir: '.'
+          cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
+          cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
 
       - name: Coverage single fail - exit
         if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == 'true' }}
@@ -51,5 +52,6 @@ jobs:
           exit 1
 
       - name: Commit pytest coverage table
+        uses: actions/checkout@v3
         with:
           body: ${{ steps.pytester-cov.outputs.output-table }}
