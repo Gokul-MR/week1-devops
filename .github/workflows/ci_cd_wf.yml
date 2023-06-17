@@ -51,25 +51,8 @@ jobs:
           echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
           exit 1
 
-      - name: Get pull request number
-        id: pr
-        run: echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-
       - name: Commit pytest coverage table
-        uses: actions/github-script@v4
+        uses: Gokul-MR/commit-comment@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { owner, repo } = context.repo;
-            const pullNumber = process.env.PR_NUMBER;
-            const commentBody = `
-              \`\`\`
-              ${{ steps.pytester-cov.outputs.output-table }}
-              \`\`\`
-            `;
-            github.issues.createComment({
-              owner,
-              repo,
-              issue_number: pullNumber,
-              body: commentBody
-            });  
+          body: ${{ steps.pytester-cov.outputs.output-table }}
+          token: ${{ secrets.GITHUB_TOKEN }}
