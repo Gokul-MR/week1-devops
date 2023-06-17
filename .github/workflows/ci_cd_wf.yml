@@ -29,7 +29,7 @@ jobs:
           python -m pip install -r requirements.txt
       - name: Run tests
         run: |
-          python -m pytest -v tests
+          python -m pytest -v tests --cov . --cov-report html
           
       - name: pytester-cov
         id: pytester-cov
@@ -51,8 +51,8 @@ jobs:
           echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
           exit 1
       
-      - name: Get Cover 
-        uses: orgoro/coverage@v3.1
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
         with:
-            coverageFile: ./coverage.xml
-            token: ${{ secrets.GITHUB_TOKEN }}
+          name: code-coverage
+          path: ./htmlcov
