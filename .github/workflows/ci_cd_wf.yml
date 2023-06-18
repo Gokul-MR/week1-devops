@@ -27,51 +27,11 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install -r requirements.txt
-      - name: Run tests
-        run: |
-          python -m pip install --upgrade pip
-          python -m pytest -v tests --cov . --cov-report xml
-
-      - name: Comment on coverage report
-        uses: actions/github-script@v4
+          - name: Run tests
+          run: |
+            python -m pytest -v tests --cov=tests.test_calculator --cov-report=xml --cov-report=term-missing
+          
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const { parseString } = require('xml2js');
-      
-            // Read the coverage report XML file
-            const coverageReport = fs.readFileSync('coverage.xml', 'utf8');
-      
-            // Parse the XML into a JavaScript object
-            parseString(coverageReport, (err, result) => {
-              if (err) {
-                console.error('Error parsing XML:', err);
-                return;
-              }
-      
-              // Extract the coverage data from the parsed result
-              const packages = result.coverage.packages[0].package;
-      
-              // Prepare the table header
-              let table = '| Package | Line Rate | Branch Rate |\n| ------- | --------- | ----------- |\n';
-      
-              // Prepare the table rows
-              packages.forEach((pkg) => {
-                const packageName = pkg.$.name;
-                const lineRate = pkg.$.lineRate;
-                const branchRate = pkg.$.branchRate;
-                table += `| ${packageName} | ${lineRate} | ${branchRate} |\n`;
-              });
-      
-              // Create the comment body
-              const commentBody = `Coverage Report\n\n${table}`;
-      
-              github.pulls.createReview({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: context.payload.pull_request.number,
-                body: commentBody,
-                event: 'COMMENT'
-              });
-            });
+          junitxml-path: coverage.xml 
