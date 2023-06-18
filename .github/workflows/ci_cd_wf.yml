@@ -35,7 +35,7 @@ jobs:
       - name: Comment on coverage report
         uses: actions/github-script@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.workflow-creashcourse }}
           script: |
             const fs = require('fs');
             const coverageReport = fs.readFileSync('coverage.xml', 'utf8');
