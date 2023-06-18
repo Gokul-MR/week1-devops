@@ -40,9 +40,10 @@ jobs:
             const fs = require('fs');
             const coverageReport = fs.readFileSync('coverage.xml', 'utf8');
             const commentBody = `Coverage Report\n\n${coverageReport}`;
-            github.issues.createComment({
-              issue_number: context.issue.number,
+            github.pulls.createReview({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: commentBody
+              pull_number: context.payload.pull_request.number,
+              body: commentBody,
+              event: 'COMMENT'
             });
