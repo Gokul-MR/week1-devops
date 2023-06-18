@@ -50,21 +50,21 @@ jobs:
                 return;
               }
     
-              // Extract the coverage data from the parsed result
-              const coverageData = result.coverage;
+            // Extract the coverage data from the parsed result
+            const coverageData = result.coverage;
     
-              // Convert the coverage data to a table format
-              const table = [];
-              Object.entries(coverageData).forEach(([key, value]) => {
-                const row = [key, value];
-                table.push(row);
-              });
+            // Convert the coverage data to a table format
+            const table = [];
+            Object.entries(coverageData).forEach(([key, value]) => {
+              const row = [key, value];
+              table.push(row);
+            });
     
-              // Format the table as a string
-              const tableString = table.map(row => row.join(' | ')).join('\n');
+            // Format the table as a string
+            const tableString = table.map(row => row.join(' | ')).join('\n');
     
-              // Create the comment body
-              const commentBody = `Coverage Report\n\n${tableString}`;
+            // Create the comment body
+            const commentBody = `Coverage Report\n\n${tableString}`;
             github.pulls.createReview({
               owner: context.repo.owner,
               repo: context.repo.repo,
