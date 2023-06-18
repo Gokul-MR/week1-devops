@@ -35,37 +35,38 @@ jobs:
       - name: Comment on coverage report
         uses: actions/github-script@v4
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const { parseString } = require('xml2js');
-          
-            // Read the coverage report file
+      
+            // Read the coverage report XML file
             const coverageReport = fs.readFileSync('coverage.xml', 'utf8');
-          
+      
             // Parse the XML into a JavaScript object
             parseString(coverageReport, (err, result) => {
               if (err) {
                 console.error('Error parsing XML:', err);
                 return;
               }
-            
+      
               // Extract the coverage data from the parsed result
-              const coverageData = result.coverage;
-            
-              // Convert the coverage data to a table format
-              const table = [];
-              Object.entries(coverageData).forEach(([key, value]) => {
-                const row = [key, value];
-                table.push(row);
+              const packages = result.coverage.packages[0].package;
+      
+              // Prepare the table header
+              let table = '| Package | Line Rate | Branch Rate |\n| ------- | --------- | ----------- |\n';
+      
+              // Prepare the table rows
+              packages.forEach((pkg) => {
+                const packageName = pkg.$.name;
+                const lineRate = pkg.$.lineRate;
+                const branchRate = pkg.$.branchRate;
+                table += `| ${packageName} | ${lineRate} | ${branchRate} |\n`;
               });
-            
-              // Format the table as a string
-              const tableString = table.map(row => row.join(' | ')).join('\n');
-            
+      
               // Create the comment body
-              const commentBody = `Coverage Report\n\n${tableString}`;
-            
+              const commentBody = `Coverage Report\n\n${table}`;
+      
               github.pulls.createReview({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -73,3 +74,4 @@ jobs:
                 body: commentBody,
                 event: 'COMMENT'
               });
+            });
