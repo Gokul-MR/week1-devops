@@ -66,8 +66,6 @@ jobs:
               // Create the comment body
               const commentBody = `Coverage Report\n\n${tableString}`;
             
-              // Create the comment body
-              const commentBody = `Coverage Report\n\n${tableString}`;
               github.pulls.createReview({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
