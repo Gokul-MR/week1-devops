@@ -35,3 +35,4 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           junitxml-path: coverage.xml 
+          pytest-coverage-path: ./coverage.txt
