@@ -35,4 +35,18 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           junitxml-path: coverage.xml 
-          pytest-coverage-path: ./coverage.txt
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          title: Coverage Report
+          badge-title: Coverage
+          hide-badge: false
+          hide-report: false
+          hide-comment: false
+          report-only-changed-files: false
+          create-new-comment: false
+          default-branch: main
+          remove-link-from-badge: false
+        env:
+          COVERAGE_SINGLE: 60
+          COVERAGE_TOTAL: 60
+          pythonLocation: /opt/hostedtoolcache/Python/3.11.4/x64
+          LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.4/x64/lib
